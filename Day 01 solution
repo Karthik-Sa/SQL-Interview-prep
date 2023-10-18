@@ -1,50 +1,47 @@
-Write an sql query to report the movies with an odd-numbered ID and a description that is not "boring". Return the result table ordered by rating in descending order.
+--Write an sql query to report the movies with an odd-numbered ID and a description that is not "boring". Return the result table ordered by rating in descending order.
 
-Let's create a new table named "Filmography" with the following schema and populate it with 5 example rows:
+--Let's create a new table named "Filmography" with the following schema and populate it with 5 example rows:
 
-Table: Cinema
 
-Column Name    | Type
-------------------------------------------------------------------
-id             | int
-movie          | varchar
-description    | varchar
-rating        | float
+CREATE TABLE Cinema (
+    id INT,
+    movie VARCHAR(255),
+    description VARCHAR(255),
+    rating FLOAT
+);
 
-Example Rows:
-
-id	   | movie	    | description	        |rating
-
----------------------------------------------------------------------
-
-1	   |War	        |thriller	              |8.9
-
-2	   |Dhakkad	    |action	                |2.1
-
-3	   |Gippi	      |boring	                |1.2
-
-4	   |Dangal	    |wrestling	            |8.6
-
-5	   |P.K.	      |Sci-Fi	                |9.1
-
-Approach 1 (When the description should not be exactly “boring” but can include “boring” as a substring):
-
-In this approach, we use the MOD operator to check whether the id of a movie is odd or not. Now, for all the odd-numbered id movies, we check if its description is not boring. 
-At last, we sort the resultant data according to the descending order of the movie rating. The SQL query for this can be written as follows:
-
+INSERT INTO Cinema (id, movie, description, rating)
+VALUES
+    (1, 'War', 'thriller', 8.9),
+    (2, 'Dhakkad', 'action', 2.1),
+    (3, 'Gippi', 'boring', 1.2),
+    (4, 'Dangal', 'wrestling', 8.6),
+    (5, 'P.K.', 'Sci-Fi', 9.1);
+	
+-- Approach 1:
+	
+-- Select movies with odd-numbered IDs and description not exactly 'boring', ordered by rating in descending order
 SELECT *
 FROM Cinema
-WHERE MOD(id, 2) = 1 AND description != 'boring'
+-- Check if the ID is odd
+WHERE MOD(id, 2) = 1
+-- Check if description is not exactly 'boring'
+AND description != 'boring'
+-- Order the result by rating in descending order
 ORDER BY rating DESC;
 
-Approach 2 (When the description should not even contain “boring” as a substring in our resultant answer):
-In this approach, we use the LIKE operator to match the description having “boring” as a substring. We then use the NOT operator to eliminate all those results. 
-For the odd-numbered id, we check it similarly as done in the previous approach. Finally, we order the result set according to the descending order of the movie rating. 
-The SQL query for it can be written as follows:
+-- Approach 2:
 
+-- Select movies with odd-numbered IDs and description not containing 'boring', ordered by rating in descending order
 SELECT *
 FROM Cinema
-WHERE id % 2 = 1 AND description NOT LIKE '%boring%'
+-- Check if the ID is odd
+WHERE id % 2 = 1
+-- Check if description does not contain 'boring'
+AND description NOT LIKE '%boring%'
+-- Order the result by rating in descending order
 ORDER BY rating DESC;
 
-Both queries achieve the desired result, considering whether the description should exactly match "boring" or if it shouldn't even contain "boring" as a substring.
+
+
+
